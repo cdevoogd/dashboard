@@ -1,0 +1,8 @@
+.*
+!.gitignore
+!.github
+
+build/
+dist/
+out/
+target/
