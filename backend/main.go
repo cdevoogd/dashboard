@@ -5,7 +5,8 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/cdevoogd/dashboard/backend/internal/api"
+	"github.com/cdevoogd/dashboard/backend/api"
+	"github.com/cdevoogd/dashboard/backend/db/memory"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -46,7 +47,7 @@ func run() error {
 		return fmt.Errorf("error loading server config: %w", err)
 	}
 
-	server, err := api.NewServer(config, sugaredLogger)
+	server, err := api.NewServer(config, sugaredLogger, memory.NewStore())
 	if err != nil {
 		return fmt.Errorf("error creating server: %w", err)
 	}
@@ -55,8 +56,6 @@ func run() error {
 }
 
 func main() {
-	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, nil)))
-
 	err := run()
 	if err != nil {
 		slog.Error(err.Error())
