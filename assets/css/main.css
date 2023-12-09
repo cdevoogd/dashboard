@@ -1,0 +1,109 @@
+:root {
+  --main-bg-color: #121212;
+  --main-text-color: #ffffff;
+  --bookmark-bg-color: #1e1e1e;
+  --bookmark-desc-color: #aaaaaa;
+
+  --bookmark-card-gap: 10px;
+  --bookmark-card-min-width: 250px;
+  --bookmark-card-max-width: 400px;
+
+  --bookmark-image-size: 40px;
+  --bookmark-name-font-size: 16px;
+  --bookmark-desc-font-size: 12px;
+
+  /* The maximum number of cards desired in a single row in the grid, even with infinite space. */
+  --max-cards: 4;
+  /*
+  Since there are only gaps between the cards, there will be one less than the number of cards in
+  the row. 4 cards would contain 3 gaps: |-card-| gap |-card-| gap |-card-| gap |-card-|
+  */
+  --max-gap-count: calc(var(--max-cards) - 1);
+  --max-gap-space: calc(var(--bookmark-card-gap) * var(--max-gap-count));
+  /*
+  Calculate what size the grid container should be to allow the max number of cards at their max
+  size, as well as the space needed for the gaps. Since we are limiting the auto-fit grid to a
+  maximum number of cards (using card-min-width below), the grid will continue to expand the cards
+  once it reaches the max number of cards in a row. This helps to prevent the grid from expanding
+  the cards past a set maximum size by limiting the actual grid container's size.
+  */
+  --max-width: calc(var(--bookmark-card-max-width) * var(--max-cards) + var(--max-gap-space));
+  /*
+  This minimum width is used to limit the number of columns in the grid, even if the grid could
+  theoretically fit more columns in the grid. On small screens the normal minimum width will be
+  used, but on larger screens the minimum with will essentially grow to (100% / max-cols) to
+  limit the number of columns the grid can fit on the screen. This also accounts for space taken
+  up by the grid gaps. Reference: https://stackoverflow.com/a/55290215/7170487
+  */
+  --card-min-width: max(var(--bookmark-card-min-width), (100% - var(--max-gap-space)) / var(--max-cards));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  font-family: "Cabin", sans-serif;
+}
+
+a {
+  color: var(--main-text-color);
+  text-decoration: none;
+}
+
+section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  margin-bottom: 0px;
+  padding: 10px 20px;
+}
+
+.section-heading {
+  margin: 10px 0;
+}
+
+.bookmark-grid {
+  display: grid;
+  gap: var(--bookmark-card-gap);
+  grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--card-min-width), 1fr)
+  );
+}
+
+.bookmark-card {
+  background-color: var(--bookmark-bg-color);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+.bookmark-icon {
+  height: var(--bookmark-image-size);
+  width: var(--bookmark-image-size);
+  min-height: var(--bookmark-image-size);
+  min-width: var(--bookmark-image-size);
+
+  margin: 5px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.bookmark-details {
+  display: block;
+  padding-left: 5px;
+  margin: auto 0;
+}
+
+.bookmark-title {
+  margin: 0;
+  font-size: var(--bookmark-name-font-size);
+}
+
+.bookmark-description {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--bookmark-desc-color);
+  font-size: var(--bookmark-desc-font-size);
+}
