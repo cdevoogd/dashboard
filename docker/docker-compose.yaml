@@ -1,0 +1,9 @@
+services:
+  dashboard:
+    container_name: dashboard
+    image: ghcr.io/cdevoogd/dashboard:master
+    ports:
+      - "5000:5000"
+    volumes:
+      # Replace this bind mount source with your config file
+      - "./config.yaml:/config.yaml"
