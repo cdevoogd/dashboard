@@ -1,10 +1,10 @@
 .*
-!.gitignore
-!.github
-
 build/
 dist/
 out/
 target/
-
 config.yaml
+
+!.gitignore
+!.github
+!.dockerignore
