@@ -14,7 +14,7 @@
             <h1 class="section-heading">{{.Name}}</h1>
             <div class="bookmark-grid">
                 {{range .Bookmarks}}
-                <a class="bookmark-card" target="_blank" rel="noreferrer">
+                <a class="bookmark-card" target="_blank" rel="noreferrer" href="{{.URL}}">
                     <img class="bookmark-icon" src="{{.Icon}}" alt="{{.Name}} icon">
                     <div class="bookmark-details">
                         <h3 class="bookmark-title">{{.Name}}</h3>
