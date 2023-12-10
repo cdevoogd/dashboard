@@ -18,7 +18,9 @@
                     <img class="bookmark-icon" src="{{.Icon}}" alt="{{.Name}} icon"></img>
                     <div class="bookmark-details">
                         <h3 class="bookmark-title">{{.Name}}</h3>
-                        <p class="bookmark-description">{{.Description}}</p>
+                        <p class="bookmark-description">
+                            {{if .Description}}{{.Description}}{{else}}{{stripURLScheme .URL}}{{end}}
+                        </p>
                     </div>
                 </a>
                 {{end}}

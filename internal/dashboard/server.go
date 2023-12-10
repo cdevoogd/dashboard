@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/cdevoogd/dashboard/assets"
@@ -29,7 +30,10 @@ func NewServer(config *Config, logger *log.Logger) (*Server, error) {
 	if logger == nil {
 		return nil, errors.New("logger is nil")
 	}
-	dashboardTemplate, err := template.New("index.html").ParseFS(assets.TemplateFS, "templates/index.html")
+
+	dashboardTemplate, err := template.New("index.html").
+		Funcs(template.FuncMap{"stripURLScheme": stripURLScheme}).
+		ParseFS(assets.TemplateFS, "templates/index.html")
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse dashboard template: %w", err)
 	}
@@ -87,4 +91,18 @@ func (s *Server) handleWrite(w http.ResponseWriter, content []byte) {
 func (s *Server) handleError(w http.ResponseWriter, code int, err error) {
 	s.logger.Error("server error", "code", code, "err", err)
 	http.Error(w, err.Error(), code)
+}
+
+func stripURLScheme(url string) string {
+	parts := strings.SplitN(url, "://", 2)
+	switch len(parts) {
+	// URL might not have had a scheme
+	case 1:
+		return parts[0]
+	// Index 0 should be the scheme, index 1 should be the rest of the URL
+	case 2:
+		return parts[1]
+	default:
+		return url
+	}
 }
