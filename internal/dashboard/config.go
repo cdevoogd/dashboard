@@ -3,6 +3,7 @@ package dashboard
 import (
 	"errors"
 	"fmt"
+	"html/template"
 
 	"github.com/kkyr/fig"
 )
@@ -91,10 +92,10 @@ func (s *Section) validate() error {
 
 // Bookmark represents a single URL bookmark on the dashboard.
 type Bookmark struct {
-	Name        string `fig:"name"`
-	Description string `fig:"desc"`
-	URL         string `fig:"url"`
-	Icon        string `fig:"icon"`
+	Name        string       `fig:"name"`
+	Description string       `fig:"desc"`
+	URL         string       `fig:"url"`
+	Icon        template.URL `fig:"icon"`
 }
 
 func (b *Bookmark) validate() error {
