@@ -4,7 +4,7 @@ import (
 	"embed"
 )
 
-//go:embed css
+//go:embed css images
 var PublicAssetFS embed.FS
 
 //go:embed templates
