@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"log/slog"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -14,7 +15,7 @@ import (
 type Config struct {
 	Port     uint16     `yaml:"port"`
 	Title    string     `yaml:"title"`
-	LogLevel string     `yaml:"log_level"`
+	LogLevel slog.Level `yaml:"log_level"`
 	Sections []*Section `yaml:"sections"`
 }
 
@@ -30,7 +31,7 @@ func LoadConfig(path string) (*Config, error) {
 	config := &Config{
 		Port:     5000,
 		Title:    "Dashboard",
-		LogLevel: "info",
+		LogLevel: slog.LevelInfo,
 	}
 
 	err = yaml.NewDecoder(file).Decode(config)

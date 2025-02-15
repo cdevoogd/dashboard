@@ -5,25 +5,25 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"log/slog"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/cdevoogd/dashboard/assets"
-	"github.com/charmbracelet/log"
 	"github.com/gorilla/mux"
 )
 
 // Server is the HTTP server that listens for and handles requests to the configured port.
 type Server struct {
 	config            *Config
-	logger            *log.Logger
+	logger            *slog.Logger
 	dashboardTemplate *template.Template
 }
 
 // NewServer will instantiate a new Server struct using the given config and logger. Any nil
 // dependencies will result in an error being returned.
-func NewServer(config *Config, logger *log.Logger) (*Server, error) {
+func NewServer(config *Config, logger *slog.Logger) (*Server, error) {
 	if config == nil {
 		return nil, errors.New("config is nil")
 	}

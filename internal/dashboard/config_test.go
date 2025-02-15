@@ -1,6 +1,7 @@
 package dashboard
 
 import (
+	"log/slog"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -23,7 +24,7 @@ func TestConfig_Validate(t *testing.T) {
 		return &Config{
 			Port:     5000,
 			Title:    "Dashboard",
-			LogLevel: "info",
+			LogLevel: slog.LevelInfo,
 			Sections: []*Section{section},
 		}
 	}

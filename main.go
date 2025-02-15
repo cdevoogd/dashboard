@@ -2,15 +2,24 @@ package main
 
 import (
 	"flag"
+	"log/slog"
+	"os"
 
 	"github.com/cdevoogd/dashboard/internal/dashboard"
-	"github.com/charmbracelet/log"
 )
 
 var configFilePath string
 
+func createLogger(level slog.Leveler) *slog.Logger {
+	handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		AddSource: false,
+		Level:     level,
+	})
+	return slog.New(handler)
+}
+
 func main() {
-	logger := log.Default()
+	logger := createLogger(slog.LevelInfo)
 
 	flag.StringVar(&configFilePath, "config", "config.yaml", "Path to the config file")
 	flag.Parse()
@@ -18,25 +27,23 @@ func main() {
 	logger.Info("Loading config", "path", configFilePath)
 	config, err := dashboard.LoadConfig(configFilePath)
 	if err != nil {
-		logger.Fatal("Error loading config", "err", err)
+		logger.Error("Error loading config", "err", err)
+		os.Exit(1)
 	}
 
-	level, err := log.ParseLevel(config.LogLevel)
-	if err != nil {
-		logger.Fatal("Error parsing log level", "configured_level", config.LogLevel, "err", err)
-	}
+	logger.Info("Setting the current log level to the configured level", "level", config.LogLevel)
+	logger = createLogger(config.LogLevel.Level())
 
-	logger.Info("Setting the current log level to the configured level", "level", level)
-	log.SetLevel(level)
-
-	server, err := dashboard.NewServer(config, logger.WithPrefix("http-server"))
+	server, err := dashboard.NewServer(config, logger)
 	if err != nil {
-		logger.Fatal("Error constructing a new server", "err", err)
+		logger.Error("Error constructing a new server", "err", err)
+		os.Exit(1)
 	}
 
 	logger.Info("Starting to listen for HTTP requests", "port", config.Port)
 	err = server.ListenAndServe()
 	if err != nil {
-		logger.Fatal("Error listening for requests", "err", err)
+		logger.Error("Error listening for requests", "err", err)
+		os.Exit(1)
 	}
 }
