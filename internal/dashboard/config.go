@@ -4,26 +4,38 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"os"
 
-	"github.com/kkyr/fig"
+	"gopkg.in/yaml.v3"
 )
 
 // Config stores the application's complete config, including the sections and bookmarks to display
 // on the dashboard.
 type Config struct {
-	Port     uint16     `fig:"port" default:"5000"`
-	Title    string     `fig:"title" default:"Dashboard"`
-	LogLevel string     `fig:"log_level" default:"info"`
-	Sections []*Section `fig:"sections" validate:"required"`
+	Port     uint16     `yaml:"port"`
+	Title    string     `yaml:"title"`
+	LogLevel string     `yaml:"log_level"`
+	Sections []*Section `yaml:"sections"`
 }
 
 // LoadConfig initializes a new Config using the config file at the given path. The config will be
 // validated once loaded, and any validation errors will be returned.
 func LoadConfig(path string) (*Config, error) {
-	config := &Config{}
-	err := fig.Load(config, fig.File(path))
+	file, err := os.Open(path)
 	if err != nil {
-		return nil, fmt.Errorf("error during load: %w", err)
+		return nil, fmt.Errorf("failed to open config: %w", err)
+	}
+	defer file.Close()
+
+	config := &Config{
+		Port:     5000,
+		Title:    "Dashboard",
+		LogLevel: "info",
+	}
+
+	err = yaml.NewDecoder(file).Decode(config)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding config: %w", err)
 	}
 
 	err = config.validate()
@@ -63,8 +75,8 @@ func (c *Config) validate() error {
 
 // Section represents a collection of bookmarks that are organized together as a single section.
 type Section struct {
-	Name      string      `fig:"name"`
-	Bookmarks []*Bookmark `fig:"bookmarks"`
+	Name      string      `yaml:"name"`
+	Bookmarks []*Bookmark `yaml:"bookmarks"`
 }
 
 func (s *Section) validate() error {
@@ -92,10 +104,10 @@ func (s *Section) validate() error {
 
 // Bookmark represents a single URL bookmark on the dashboard.
 type Bookmark struct {
-	Name        string       `fig:"name"`
-	Description string       `fig:"desc"`
-	URL         string       `fig:"url"`
-	Icon        template.URL `fig:"icon"`
+	Name        string       `yaml:"name"`
+	Description string       `yaml:"desc"`
+	URL         string       `yaml:"url"`
+	Icon        template.URL `yaml:"icon"`
 }
 
 func (b *Bookmark) validate() error {
