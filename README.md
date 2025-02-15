@@ -28,8 +28,6 @@ sections:
         desc: Ad Blocking & Local DNS
         # The URL of the bookmark to open when clicked.
         url: https://adguard.example.com
-        # A URL to an icon to show for the bookmark.
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/adguard-home.png
 ```
 
 ### Example Config File
@@ -43,21 +41,16 @@ sections:
       - name: Actual
         desc: Ad Blocking & Local DNS
         url: https://adguard.example.com
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/adguard-home.png
       - name: Actual Budget
         desc: Self-Hosted Personal Finance App
         url: https://actual.example.com
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/actual.png
       - name: Home Assistant
         desc: Smart Home Hub
         url: https://homeassistant.example.com
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/home-assistant.png
   - name: Shortcuts
     bookmarks:
       - name: GitHub
         url: https://github.com/
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/github.png
       - name: JIRA
         url: https://jira.example.com
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jira.png
 ```

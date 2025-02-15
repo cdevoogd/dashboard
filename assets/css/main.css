@@ -1,14 +1,13 @@
 :root {
-  --main-bg-color: #121212;
-  --main-text-color: #ffffff;
-  --bookmark-bg-color: #1e1e1e;
+  --main-bg-color: #09090b;
+  --main-text-color: #fafafa;
   --bookmark-desc-color: #aaaaaa;
 
   --bookmark-card-gap: 10px;
   --bookmark-card-min-width: 250px;
   --bookmark-card-max-width: 400px;
+  --bookmark-card-height: 40px;
 
-  --bookmark-image-size: 40px;
   --bookmark-name-font-size: 16px;
   --bookmark-desc-font-size: 12px;
 
@@ -43,7 +42,7 @@ body {
   padding: 0;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
-  font-family: "Cabin", sans-serif;
+  font-family: "Roboto Mono", monospace;
 }
 
 a {
@@ -65,29 +64,18 @@ section {
 .bookmark-grid {
   display: grid;
   gap: var(--bookmark-card-gap);
-  grid-template-columns: repeat(
-      auto-fill,
-      minmax(var(--card-min-width), 1fr)
-  );
+  grid-template-columns: repeat(auto-fill,
+      minmax(var(--card-min-width), 1fr));
 }
 
 .bookmark-card {
-  background-color: var(--bookmark-bg-color);
+  min-height: var(--bookmark-card-height);
+  padding: 5px;
+  border: 1px solid #27272a;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
-}
-
-.bookmark-icon {
-  height: var(--bookmark-image-size);
-  width: var(--bookmark-image-size);
-  min-height: var(--bookmark-image-size);
-  min-width: var(--bookmark-image-size);
-
-  margin: 5px;
-  border-radius: 8px;
-  text-align: center;
 }
 
 .bookmark-details {

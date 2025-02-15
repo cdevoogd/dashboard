@@ -13,7 +13,6 @@ func TestConfig_Validate(t *testing.T) {
 			Name:        "Alpha",
 			Description: "A description for alpha",
 			URL:         "https://example.com",
-			Icon:        "https://example.com/icon.png",
 		}
 
 		section := &Section{
@@ -97,11 +96,6 @@ func TestConfig_Validate(t *testing.T) {
 		{
 			name:       "bookmark is missing url",
 			editConfig: func(c *Config) { c.Sections[0].Bookmarks[0].URL = "" },
-			wantError:  true,
-		},
-		{
-			name:       "bookmark is missing icon",
-			editConfig: func(c *Config) { c.Sections[0].Bookmarks[0].Icon = "" },
 			wantError:  true,
 		},
 	}

@@ -3,7 +3,6 @@ package dashboard
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"log/slog"
 	"os"
 
@@ -105,10 +104,9 @@ func (s *Section) validate() error {
 
 // Bookmark represents a single URL bookmark on the dashboard.
 type Bookmark struct {
-	Name        string       `yaml:"name"`
-	Description string       `yaml:"desc"`
-	URL         string       `yaml:"url"`
-	Icon        template.URL `yaml:"icon"`
+	Name        string `yaml:"name"`
+	Description string `yaml:"desc"`
+	URL         string `yaml:"url"`
 }
 
 func (b *Bookmark) validate() error {
@@ -118,10 +116,6 @@ func (b *Bookmark) validate() error {
 
 	if b.URL == "" {
 		return errors.New("missing url")
-	}
-
-	if b.Icon == "" {
-		return errors.New("missing icon")
 	}
 
 	return nil
