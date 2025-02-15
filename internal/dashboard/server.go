@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/cdevoogd/dashboard/assets"
-	"github.com/gorilla/mux"
 )
 
 // Server is the HTTP server that listens for and handles requests to the configured port.
@@ -47,20 +46,20 @@ func NewServer(config *Config, logger *slog.Logger) (*Server, error) {
 
 // ListenAndServe will being listening for HTTP requests on the configured port.
 func (s *Server) ListenAndServe() error {
-	router := mux.NewRouter()
-	router.HandleFunc("/", s.handleGetDashboard).Methods(http.MethodGet)
-	router.HandleFunc("/health", s.handleHealthCheck).Methods(http.MethodGet)
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /{$}", s.handleGetDashboard)
+	mux.HandleFunc("GET /health", s.handleHealthCheck)
 
 	assetServer := http.FileServer(http.FS(assets.PublicAssetFS))
 	assetHandler := http.StripPrefix("/assets/", assetServer)
-	router.PathPrefix("/assets/").Handler(assetHandler)
+	mux.Handle("GET /assets/", assetHandler)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", s.config.Port),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		Handler:      router,
+		Handler:      mux,
 	}
 	return srv.ListenAndServe()
 }
